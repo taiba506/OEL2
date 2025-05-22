@@ -10,7 +10,7 @@ namespace OEL2
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     public class Salary_Calculator : System.Web.Services.WebService
-    {
+    {   
         /// <summary>
         /// Calculates monthly salary for full-time employees based on logged hours.
         /// </summary>
