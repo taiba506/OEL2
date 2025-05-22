@@ -1,61 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Services;
 
 namespace OEL2
 {
     /// <summary>
-    /// Summary description for Salary_Calculator
+    /// Web service for calculating salaries of various employee types.
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    // [System.Web.Script.Services.ScriptService]
     public class Salary_Calculator : System.Web.Services.WebService
     {
+        /// <summary>
+        /// Calculates monthly salary for full-time employees based on logged hours.
+        /// </summary>
         [WebMethod]
-        public double CalculateFullTimeSalary(double annualSalary, int weeklyHours, int workingWeeks, double loggedHours)
+        public string CalculateFullTimeSalary(double annualSalary, int weeklyHours, int workingWeeks, double loggedHours)
         {
-            if (annualSalary <= 0 || weeklyHours <= 0 || workingWeeks <= 0)
-                return -1; // Invalid input
+            if (annualSalary <= 0 || weeklyHours <= 0 || workingWeeks <= 0 || loggedHours < 0)
+                return "Error: Invalid input. All values must be positive.";
 
-            double totalHours = weeklyHours * workingWeeks;
-            double hourlyRate = annualSalary / totalHours;
-            return hourlyRate * loggedHours;
+            double totalAnnualHours = weeklyHours * workingWeeks;
+            double hourlyRate = annualSalary / totalAnnualHours;
+            double salary = hourlyRate * loggedHours;
+
+            return $"Hourly Rate: {hourlyRate:F2}, Calculated Salary: {salary:F2}";
         }
 
+        /// <summary>
+        /// Calculates salary for part-time employees with max hours validation.
+        /// </summary>
         [WebMethod]
         public string CalculatePartTimeSalary(double hourlyRate, double totalHours)
         {
-            double maxHoursPerWeek = 25;
-            double weeklyHours = totalHours / 4;
-            if (weeklyHours > maxHoursPerWeek)
-                return "Warning: Overtime. Salary = " + (hourlyRate * totalHours).ToString();
+            const double maxHoursPerWeek = 25;
 
-            return (hourlyRate * totalHours).ToString();
+            if (hourlyRate <= 0 || totalHours < 0)
+                return "Error: Invalid hourly rate or hours worked.";
+
+            double avgWeeklyHours = totalHours / 4; // Assuming 4 weeks in a month
+            double salary = hourlyRate * totalHours;
+
+            if (avgWeeklyHours > maxHoursPerWeek)
+                return $"Warning: Overtime detected. Salary: {salary:F2}";
+
+            return $"Salary: {salary:F2}";
         }
 
+        /// <summary>
+        /// Calculates salary for contract employees.
+        /// </summary>
         [WebMethod]
-        public double CalculateContractSalary(bool isMilestoneBased, double milestonePayment, int milestonesCompleted, double fixedFee)
+        public string CalculateContractSalary(bool isMilestoneBased, double milestonePayment, int milestonesCompleted, double fixedFee)
         {
-            return isMilestoneBased ? milestonePayment * milestonesCompleted : fixedFee;
+            if (isMilestoneBased)
+            {
+                if (milestonePayment <= 0 || milestonesCompleted < 0)
+                    return "Error: Invalid milestone payment or count.";
+                return $"Salary: {(milestonePayment * milestonesCompleted):F2}";
+            }
+            else
+            {
+                if (fixedFee <= 0)
+                    return "Error: Invalid fixed project fee.";
+                return $"Salary: {fixedFee:F2}";
+            }
         }
 
+        /// <summary>
+        /// Calculates salary for freelance workers based on task count and rates.
+        /// </summary>
         [WebMethod]
-        public double CalculateFreelanceSalary(string[] taskCategories, int[] taskCounts, double[] taskRates)
+        public string CalculateFreelanceSalary(string[] taskCategories, int[] taskCounts, double[] taskRates)
         {
+            if (taskCategories == null || taskCounts == null || taskRates == null)
+                return "Error: Null input arrays.";
+
             if (taskCategories.Length != taskCounts.Length || taskCounts.Length != taskRates.Length)
-                return -1;
+                return "Error: Input array lengths do not match.";
 
             double total = 0;
-            for (int i = 0; i < taskCategories.Length; i++)
+
+            for (int i = 0; i < taskCounts.Length; i++)
             {
+                if (taskCounts[i] < 0 || taskRates[i] < 0)
+                    return "Error: Task count and rates must be non-negative.";
+
                 total += taskCounts[i] * taskRates[i];
             }
-            return total;
+
+            return $"Total Freelance Salary: {total:F2}";
         }
     }
 }
