@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OEL2", "OEL2\OEL2.csproj", "{9025904E-F830-4287-997C-CEF6679883E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OEL_2_1", "..\OEL_2_1\OEL_2_1\OEL_2_1.csproj", "{1B818620-5C65-49A2-A50B-F340F5ADB2EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9025904E-F830-4287-997C-CEF6679883E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9025904E-F830-4287-997C-CEF6679883E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9025904E-F830-4287-997C-CEF6679883E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B818620-5C65-49A2-A50B-F340F5ADB2EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B818620-5C65-49A2-A50B-F340F5ADB2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B818620-5C65-49A2-A50B-F340F5ADB2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B818620-5C65-49A2-A50B-F340F5ADB2EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
